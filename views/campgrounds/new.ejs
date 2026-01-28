@@ -1,7 +1,7 @@
 <% layout('layout/boilerplate') %>
 <div class="container">
     <h1 class="mb-4">Add New Campground</h1>
-    <form action="/campgrounds" method="POST">
+    <form action="/campgrounds" method="POST"> novalidate class="validation form"> 
         <div class="mb-3">
             <label for="title" class="form-label">Title:</label>
             <input type="text" class="form-control" id="title" name="title" required>
@@ -27,3 +27,24 @@
         <button type="submit" class="btn btn-primary">Create Campground</button>
     </form>
 </div>
+
+<script>// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+const forms = document.querySelectorAll('.validation form')
+
+  // Loop over them and prevent submission
+Array.from(forms)
+    .forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+    }, false)
+    })
+})()</script>
