@@ -4,6 +4,7 @@ const CatchAsync = require('../utils/CatchAsync');
 const expressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
 const { campgroundSchema } = require('../schemas.js');
+const { IsLoggedin } = require('../middleware');
 
 const validateCampground = (req,res,next) => {
     
@@ -21,11 +22,11 @@ router.get('/', CatchAsync(async(req,res) => {
     res.render('campgrounds/index',{campgrounds})
 }))
 
-router.get('/new', CatchAsync(async(req,res) => {
+router.get('/new', IsLoggedin, CatchAsync(async(req,res) => {
     res.render('campgrounds/new')
 }));
 
-router.post('/', validateCampground, CatchAsync(async(req,res,next) => {
+router.post('/', validateCampground, IsLoggedin, CatchAsync(async(req,res,next) => {
     
     // if(!req.body.Campground) {
     //     throw new ExpressError('Invalid Campground Data',400);
@@ -39,7 +40,7 @@ router.post('/', validateCampground, CatchAsync(async(req,res,next) => {
 
 
 
-router.get('/:id/edit', CatchAsync(async(req,res) => {
+router.get('/:id/edit', IsLoggedin, CatchAsync(async(req,res) => {
     const {id} = req.params;
     const campground = await Campground.findById(id);
     if(!campground){
@@ -49,7 +50,7 @@ router.get('/:id/edit', CatchAsync(async(req,res) => {
     res.render('campgrounds/edit',{campground})
 }));
 
-router.put('/:id',validateCampground, CatchAsync(async(req,res) => {
+router.put('/:id',validateCampground,IsLoggedin,CatchAsync(async(req,res) => {
     const {id} = req.params;
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.Campground});    
     req.flash('success','Successfully updated campground!');
@@ -66,7 +67,7 @@ router.get('/:id', CatchAsync(async(req,res) => {
     res.render('campgrounds/show',{campground})
 }));
 
-router.delete('/:id', CatchAsync(async(req,res) => {
+router.delete('/:id',IsLoggedin, CatchAsync(async(req,res) => {
     const {id} = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success','Successfully deleted campground!');
