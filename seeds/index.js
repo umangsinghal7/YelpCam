@@ -25,11 +25,11 @@ const seedDB = async () => {
             title: `${sample(descriptors)} ${sample(places)}`,
             image :`https://picsum.photos/1000?random=${Math.random()}`,
             description: 'hlo my name is umang and this is a sample description for yelp camp',
-            price : Math.floor(Math.random() * 20) + 10
+            price : Math.floor(Math.random() * 200) + 10
         })
         await camp.save();
     }
-}
+} 
 seedDB().then(() => {
     mongoose.connection.close();
     console.log(`Database connection closed`);

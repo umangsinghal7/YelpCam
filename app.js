@@ -59,7 +59,7 @@ app.use((req,res,next) => {
 })
 
 app.use('/campgrounds',campgroundRoutes);
-app.use('/campgrounds/:id/reviews',reviewRoutes);
+//app.use('/campgrounds/:id/reviews',reviewRoutes);
 app.use('/',userRoutes);
 
 app.engine('ejs',engine);
