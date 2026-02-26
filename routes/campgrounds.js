@@ -6,11 +6,16 @@ const Reviewroutes = require('./review');
 const { campgroundSchema } = require('../schemas.js');
 const  campgrounds = require('../controllers/campgrounds');
 const { IsLoggedin , validateCampground , verifyAuthor } = require('../middleware');
+const multer  = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
+
 
 
 router.route('/')
     .get(CatchAsync(campgrounds.index))
-    .post(validateCampground, IsLoggedin, CatchAsync(campgrounds.createCampground));
+    .post( IsLoggedin,upload.array('image'),validateCampground, CatchAsync(campgrounds.createCampground));
+    
 
 router.get('/new', IsLoggedin, CatchAsync(campgrounds.renderNewForm));
 

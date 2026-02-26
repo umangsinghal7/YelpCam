@@ -1,3 +1,10 @@
+if(process.env.NODE_ENV !== "production"){       // so that we can use .env file in development environment
+    require('dotenv').config();                     
+}
+
+console.log(process.env.SECRET)
+console.log(process.env.API_key)
+
 const express = require('express');
 const app = express();
 const port = 5000;
