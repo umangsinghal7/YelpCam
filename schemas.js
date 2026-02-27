@@ -9,6 +9,7 @@ const joi = require('joi');
             location : joi.string().required(),
             description : joi.string().required()
         }).required(),
+        deleteImages : joi.array()
     });
 
     module.exports.reviewSchema = joi.object({

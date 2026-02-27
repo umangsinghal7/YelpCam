@@ -25,7 +25,8 @@
             Looks good!
             </div>
         </div>
-        <input type="file" name = "image" class="form-control mb-3" id="image" multiple accept="image/*">
+        
+        
         <!-- <div class="mb-3">
             <label for="image" class="form-label">Image URL:</label>
             <input type="text" class="form-control" id="image" name="campground[image]" required>
@@ -40,8 +41,25 @@
             Looks good!
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Create Campground</button>
-    </form>
+        <div class="mb-4">
+    <label for="image" class="form-label fw-semibold">Upload Campground Images</label>
+    <div class="p-3 border rounded bg-light">
+        <input 
+            type="file" 
+            id="image" 
+            name="image" 
+            class="form-control"
+            multiple
+        >
+    </div>
 </div>
+        <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Create Campground</button>
+        </div>
+    </form>
+    <a href="/campgrounds">All Campgrounds</a>
+    </div>
+</div>
+
 
 
