@@ -116,7 +116,9 @@
                                     <form
                                         action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE"
                                         method="POST" class="d-inline">
+                                        <% if(currentUser && currentUser._id.equals(review.author._id)) { %>
                                         <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                        <% } %> 
                                     </form>
 
                                 </div>
