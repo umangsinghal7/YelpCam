@@ -1,19 +1,20 @@
-// if (process.env.NODE_ENV !== "production") {       // so that we can use .env file in development environment
-//     require('dotenv').config();
-// }
+if (process.env.NODE_ENV !== "production") {       // so that we can use .env file in development environment
+    require('dotenv').config();
+}
 
-require('dotenv').config();
+// require('dotenv').config();
+
 
 console.log(process.env.SECRET)
 console.log(process.env.API_key)
 
 const express = require('express');
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 const path = require('path');
 const engine = require('ejs-mate');
 const mongoose = require('mongoose');
-const session = require('express-session');
+// const session = require('express-session');
 const methodOverride = require('method-override');
 const expressError = require('./utils/ExpressError');
 const flash = require('connect-flash');
@@ -21,6 +22,12 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const helmet = require('helmet');
+// const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+
+const session = require('express-session');
+ 
+const { MongoStore } = require('connect-mongo');
 
 const sanitizeV5 = require('./utils/mongoSanitizeV5.js');
 
@@ -29,7 +36,10 @@ const reviewRoutes = require('./routes/review');
 const userRoutes = require('./routes/users');
 
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp')
+mongoose.connect(dbUrl)
+// .then(()=>console.log("Database connected"))
+// .catch(err=>console.log(err));
+
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -40,11 +50,24 @@ db.once("open", () => {
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret
+    }
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 const sessionConfig = {
+    store,
     name: 'session',
-    secret: 'nope',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -102,6 +125,6 @@ app.use((err, req, res, next,) => {
 
 
 app.listen(port, () => {
-    console.log("hlo i am listeningon port 5000")
+    console.log(`hlo i am listening on port ${port}`)
 
 })
